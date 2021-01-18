@@ -1,7 +1,26 @@
 <script>
 export let tasks;
+export let Completedtasks;
 let notasksrc="images/notask.svg"
-import moment from 'moment';
+let deleteSrc = "images/trash.svg"
+let doneSrc = "images/checked.svg"
+import { createEventDispatcher } from 'svelte';
+
+const dispatch = createEventDispatcher();
+
+function deleteCall(e){
+// console.log(e)
+dispatch("deleteTask",e);
+}
+function doneCall(e){
+// console.log(e)
+dispatch("doneCall",e);
+}
+function deleteCallCompleted(e){
+// console.log(e)
+dispatch("deleteCallCompleted",e);
+}
+
 
 </script>
 <style>
@@ -23,7 +42,7 @@ div.card {
 }
 
 div.header {
-  background-color: #010801;
+  background-color:#ff4646;
   color: white;
   padding: 10px;
   font-size: 40px;
@@ -34,6 +53,33 @@ div.container {
 }
 .flexNumber {
     flex: 0 0 33.333333%;
+}
+.divSpan{
+  font-size: .7rem;
+}
+.spandate{
+  color: green;
+  font-size: 1rem;
+  font-weight: bold;
+
+}
+.spanspand{
+  color: tomato;
+  font-size: 1rem;
+  font-weight: bold;
+
+
+}
+
+.action{
+  width: 20px;
+  height: 20px;
+}
+.completed{
+  background-color: #00af91;
+  color: white;
+  padding: 10px;
+  font-size: 40px;
 }
 </style>
 
@@ -50,11 +96,21 @@ div.container {
        
         <div class="card">
             <div class="header">
-              <h1>{item}</h1>
+              <h1>{item.item}</h1>
             </div>
           
-            <div class="container">
-              <p>{moment().format("MMMM Do YYYY, h:mm:ss a")}</p>
+            <div class="d-flex justify-content-between">
+              <div class="d-flex flex-column p-2 justify-content-start text-left">
+                <div class="divSpan m-2">Created on : <span class="spandate">{item.date}</span></div>
+                <div class="divSpan m-2">Time spent : <span class="spanspand">{item.spend}</span></div>
+              </div>
+              <div class="d-flex flex-column p-2 text-left">
+                <div class="divSpan m-2">Set time : <input type="time" /> </div>
+                <div class="d-flex justify-content-around m-2">
+                  <img src={deleteSrc} class="action" on:click={deleteCall(item)} alt="" />
+                  <img src={doneSrc} class="action" on:click={doneCall(item)}  alt="" />
+                </div>
+              </div>
             </div>
           </div>
             
@@ -64,5 +120,36 @@ div.container {
     </div>
     {/if}
 
+    {#if Completedtasks.length != 0}
+<hr>
+<div class="d-flex m-auto flex-wrap  justify-content-center">
+    
+    {#each Completedtasks as item}
+  
+    <div class="card">
+        <div class="completed">
+          <h1>{item.item}</h1>
+        </div>
+      
+        <div class="d-flex justify-content-between">
+          <div class="d-flex flex-column p-2 justify-content-start text-left">
+            <div class="divSpan m-2">Created on : <span class="spandate">{item.date}</span></div>
+            <div class="divSpan m-2">Time spent : <span class="spanspand">{item.spend}</span></div>
+          </div>
+          <div class="d-flex flex-column p-2 text-left">
+            <div class="divSpan m-2">Set time : <input type="time" /> </div>
+            <div class="d-flex justify-content-around m-2">
+              <img src={deleteSrc} class="action" on:click={deleteCallCompleted(item)} alt="" />
+              <!-- <img src={doneSrc} class="action" alt="" /> -->
+            </div>
+          </div>
+        </div>
+      </div>
+        
+    
+    {/each}
+
+</div>
+{/if}
 
 </div>

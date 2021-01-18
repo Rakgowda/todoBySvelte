@@ -2,13 +2,48 @@
 	import Header from "./component/Header.svelte";
 	import AddTaskText from "./component/TextInput.svelte"
 	import TaskManagement from "./component/TaskManagement.svelte"
+	import moment from 'moment';
+
 	let tasks=[]
+	let Completedtasks=[]
+
 	function taskHandler(e)
 	{
 		console.log("from app "+e.detail)
-		tasks = [...tasks,e.detail]
+		let task = {}
+		task["item"] = e.detail;
+		task["date"] = moment().format("DD-MM-YYYY");
+		task["spend"] = 0;
+
+		tasks = [...tasks,task]
 		console.log(tasks)
 	}
+
+	function deleteTask(e) { 
+		console.log(e.detail)
+		let item = e.detail;
+
+		let newTask = tasks.filter(e=> e.item !== item.item);
+		
+		tasks=newTask;
+	 }
+	 function doneCall(e) { 
+		console.log(e.detail)
+		let item = e.detail;
+
+		let newTask = tasks.filter(e=> e.item !== item.item);
+		console.log(newTask)
+		Completedtasks = [...Completedtasks,item]
+		tasks=newTask;
+	 }
+	 function deleteCallCompleted(e) {
+		console.log(e.detail)
+		let item = e.detail;
+
+		let newTask = Completedtasks.filter(e=> e.item !== item.item);
+		
+		Completedtasks=newTask;
+	   }
 </script>
 
 <Header></Header>
@@ -19,7 +54,7 @@
 
 </AddTaskText>
 
-<TaskManagement {tasks}>
+<TaskManagement {tasks} {Completedtasks} on:deleteCallCompleted={deleteCallCompleted} on:deleteTask={deleteTask} on:doneCall={doneCall}>
 
 </TaskManagement>
 
