@@ -7,6 +7,19 @@
 	let tasks=[]
 	let Completedtasks=[]
 
+	let localtask = window.localStorage.getItem("tasks");
+	let localCompltedtask = window.localStorage.getItem("completedtask")
+// console.log(JSON.parse(localtask))
+if(localtask != null )
+{
+	tasks= JSON.parse(localtask)
+}
+
+if(localCompltedtask != null)
+{
+	Completedtasks = JSON.parse(localCompltedtask)
+}
+
 	function taskHandler(e)
 	{
 		console.log("from app "+e.detail)
@@ -16,7 +29,10 @@
 		task["spend"] = 0;
 
 		tasks = [...tasks,task]
-		console.log(tasks)
+		window.localStorage.setItem("tasks",JSON.stringify(tasks))
+		console.log(JSON.stringify(tasks))
+		// console.log()
+
 	}
 
 	function deleteTask(e) { 
@@ -26,6 +42,7 @@
 		let newTask = tasks.filter(e=> e.item !== item.item);
 		
 		tasks=newTask;
+		window.localStorage.setItem("tasks",JSON.stringify(tasks))
 	 }
 	 function doneCall(e) { 
 		console.log(e.detail)
@@ -35,6 +52,8 @@
 		console.log(newTask)
 		Completedtasks = [...Completedtasks,item]
 		tasks=newTask;
+		window.localStorage.setItem("tasks",JSON.stringify(tasks))
+		window.localStorage.setItem("completedtask",JSON.stringify(Completedtasks))
 	 }
 	 function deleteCallCompleted(e) {
 		console.log(e.detail)
@@ -43,6 +62,8 @@
 		let newTask = Completedtasks.filter(e=> e.item !== item.item);
 		
 		Completedtasks=newTask;
+		window.localStorage.setItem("completedtask",JSON.stringify(Completedtasks))
+
 	   }
 </script>
 
