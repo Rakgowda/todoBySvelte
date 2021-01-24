@@ -4,6 +4,8 @@ export let Completedtasks;
 let notasksrc="images/notask.svg"
 let deleteSrc = "images/trash.svg"
 let doneSrc = "images/checked.svg"
+let thumbs = "images/thumbs-up.svg"
+
 import { createEventDispatcher } from 'svelte';
 
 const dispatch = createEventDispatcher();
@@ -39,20 +41,25 @@ div.card {
   margin: 5px;
   border: transparent;
   flex: 0 0 33.333333%;
+  padding: 20px;
 }
 
-div.header {
-  background-color:#ff4646;
-  color: white;
-  padding: 10px;
-  font-size: 40px;
-}
+.incompleteTask {
+  background-color:#4a9bf1;
+  /* color: ; */
 
-div.container {
-  padding: 10px;
 }
-.flexNumber {
-    flex: 0 0 33.333333%;
+.completeTask {
+  background-color:#0cec7c;
+  /* color: ; */
+
+}
+.itemText {
+ font-size: 20px;
+font-weight: bold;
+}
+.cc {
+  transform: translateX(25%);
 }
 .divSpan{
   font-size: .7rem;
@@ -81,6 +88,12 @@ div.container {
   padding: 10px;
   font-size: 40px;
 }
+.card{
+  min-width: 600px;
+  
+}
+
+
 </style>
 
 <div class="taskFlex">
@@ -90,28 +103,24 @@ div.container {
         
 
     {:else}
-    <div class="d-flex m-auto flex-wrap  justify-content-center">
+    <div class="d-flex flex-column cc">
         
         {#each tasks as item}
        
-        <div class="card">
-            <div class="header">
-              <h1>{item.item}</h1>
+        <div class="card incompleteTask">
+          <div class="row">
+
+          <div class="col-md-2 m-auto">
+            <img src={doneSrc} class="action" on:click={doneCall(item)}  alt="" /></div>
+          <div class="col-md-8 align-self-center">
+            <div class="itemText">
+            {item.item}
             </div>
+          </div>
+          <div class="col-md-2 m-auto"> <img src={deleteSrc} class="action" on:click={deleteCall(item)} alt="" /></div>
           
-            <div class="d-flex justify-content-between">
-              <div class="d-flex flex-column p-2 justify-content-start text-left">
-                <div class="divSpan m-2">Created on : <span class="spandate">{item.date}</span></div>
-                <div class="divSpan m-2">Time spent : <span class="spanspand">{item.spend}</span></div>
-              </div>
-              <div class="d-flex flex-column p-2 text-left">
-                <div class="divSpan m-2">Set time : <input type="time" /> </div>
-                <div class="d-flex justify-content-around m-2">
-                  <img src={deleteSrc} class="action" on:click={deleteCall(item)} alt="" />
-                  <img src={doneSrc} class="action" on:click={doneCall(item)}  alt="" />
-                </div>
-              </div>
-            </div>
+          </div>
+  
           </div>
             
         
@@ -122,28 +131,25 @@ div.container {
 
     {#if Completedtasks.length != 0}
 <hr>
-<div class="d-flex m-auto flex-wrap  justify-content-center">
+<div class="d-flex m-auto flex-column cc">
     
     {#each Completedtasks as item}
   
-    <div class="card">
-        <div class="completed">
-          <h1>{item.item}</h1>
+    <div class="card completeTask">
+      <div class="row">
+
+      <div class="col-md-2 m-auto">
+        <img src={thumbs} class="action"  data-toggle="modal" data-target="#myModal"  alt="" />
+      </div>
+      <div class="col-md-8 align-self-center">
+        <div class="itemText">
+        {item.item}
         </div>
+      </div>
+      <div class="col-md-2 m-auto"> <img src={deleteSrc} class="action" on:click={deleteCallCompleted(item)} alt="" /></div>
       
-        <div class="d-flex justify-content-between">
-          <div class="d-flex flex-column p-2 justify-content-start text-left">
-            <div class="divSpan m-2">Created on : <span class="spandate">{item.date}</span></div>
-            <div class="divSpan m-2">Time spent : <span class="spanspand">{item.spend}</span></div>
-          </div>
-          <div class="d-flex flex-column p-2 text-left">
-            <div class="divSpan m-2">Set time : <input type="time" /> </div>
-            <div class="d-flex justify-content-around m-2">
-              <img src={deleteSrc} class="action" on:click={deleteCallCompleted(item)} alt="" />
-              <!-- <img src={doneSrc} class="action" alt="" /> -->
-            </div>
-          </div>
-        </div>
+      </div>
+
       </div>
         
     
@@ -151,5 +157,24 @@ div.container {
 
 </div>
 {/if}
+
+ <!-- The Modal -->
+ <div class="modal fade" id="myModal">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+   
+      <!-- Modal body -->
+      <div class="modal-body text-center">
+        You have done it boss
+      </div>
+      
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Done</button>
+      </div>
+      
+    </div>
+  </div>
+</div>
 
 </div>
