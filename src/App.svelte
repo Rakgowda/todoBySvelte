@@ -27,6 +27,7 @@ if(localCompltedtask != null)
 		task["item"] = e.detail;
 		task["date"] = moment().format("DD-MM-YYYY");
 		task["spend"] = 0;
+		task["play"] = false;
 
 		tasks = [...tasks,task]
 		window.localStorage.setItem("tasks",JSON.stringify(tasks))

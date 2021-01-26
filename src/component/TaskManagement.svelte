@@ -1,10 +1,13 @@
 <script>
 export let tasks;
 export let Completedtasks;
+let playClick = false;
 let notasksrc="images/notask.svg"
 let deleteSrc = "images/trash.svg"
 let doneSrc = "images/checked.svg"
 let thumbs = "images/thumbs-up.svg"
+let play = "images/play.svg"
+let pause = "images/pause.svg"
 
 import { createEventDispatcher } from 'svelte';
 
@@ -22,6 +25,19 @@ function deleteCallCompleted(e){
 // console.log(e)
 dispatch("deleteCallCompleted",e);
 }
+
+function changePlayClickState(i) { 
+  debugger
+  console.log(tasks[i].play)
+  
+  if(tasks[i].play)
+  {
+    tasks[i].play=false;
+  }
+  else{
+    tasks[i].play=true;
+  }
+ }
 
 
 </script>
@@ -61,36 +77,21 @@ font-weight: bold;
 .cc {
   transform: translateX(25%);
 }
-.divSpan{
-  font-size: .7rem;
-}
-.spandate{
-  color: green;
-  font-size: 1rem;
-  font-weight: bold;
 
-}
-.spanspand{
-  color: tomato;
-  font-size: 1rem;
-  font-weight: bold;
-
-
-}
 
 .action{
   width: 20px;
   height: 20px;
 }
-.completed{
-  background-color: #00af91;
-  color: white;
-  padding: 10px;
-  font-size: 40px;
-}
+
 .card{
   min-width: 600px;
   
+}
+
+.playpause{
+  margin-top: auto;
+margin-bottom: auto;
 }
 
 
@@ -105,15 +106,15 @@ font-weight: bold;
     {:else}
     <div class="d-flex flex-column cc">
         
-        {#each tasks as item}
-       
+        {#each tasks as item,i}
+       <div class="d-flex">
         <div class="card incompleteTask">
           <div class="row">
 
           <div class="col-md-2 m-auto">
             <img src={doneSrc} class="action" on:click={doneCall(item)}  alt="" /></div>
           <div class="col-md-8 align-self-center">
-            <div class="itemText">
+            <div class="itemText text-uppercase">
             {item.item}
             </div>
           </div>
@@ -122,6 +123,15 @@ font-weight: bold;
           </div>
   
           </div>
+         <div class="playpause">
+           {#if !item.play}
+          <img src={play} class="action" on:click={()=>changePlayClickState(i)} alt="" />
+          {:else}
+          <img src={pause} class="action" on:click={()=>changePlayClickState(i)} alt="" />
+          {/if}
+         </div>
+
+        </div>
             
         
         {/each}
@@ -142,11 +152,11 @@ font-weight: bold;
         <img src={thumbs} class="action"  data-toggle="modal" data-target="#myModal"  alt="" />
       </div>
       <div class="col-md-8 align-self-center">
-        <div class="itemText">
+        <div class="itemText text-uppercase">
         {item.item}
         </div>
       </div>
-      <div class="col-md-2 m-auto"> <img src={deleteSrc} class="action" on:click={deleteCallCompleted(item)} alt="" /></div>
+      <div class="col-md-2 m-auto"> <img src={deleteSrc} class="action" on:click={deleteCallCompleted()} alt="" /></div>
       
       </div>
 
