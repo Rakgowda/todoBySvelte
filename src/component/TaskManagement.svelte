@@ -156,7 +156,7 @@ margin-bottom: auto;
         {item.item}
         </div>
       </div>
-      <div class="col-md-2 m-auto"> <img src={deleteSrc} class="action" on:click={deleteCallCompleted()} alt="" /></div>
+      <div class="col-md-2 m-auto"> <img src={deleteSrc} class="action" on:click={deleteCallCompleted(item)} alt="" /></div>
       
       </div>
 
